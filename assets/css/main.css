@@ -2888,11 +2888,11 @@ input, select, textarea {
 			}
 
 				#header > header {
-					padding: 2em;
+					padding: 1em;
 				}
 
 				#header > footer {
-					padding: 1.5em;
+					padding: 0em;
 				}
 
 		/* Wrapper */
