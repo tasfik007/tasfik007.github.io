@@ -10,7 +10,7 @@
   <meta property="og:description" content="Computer vision · Human behavior & visual attention · Reliable ML systems">
   <meta property="og:type" content="profile">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231f4e79'/><text x='32' y='42' font-family='Georgia,serif' font-size='30' fill='white' text-anchor='middle'>TR</text></svg>">
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=11">
   <script>
     // Apply the visitor's saved theme before first paint; dark is the default.
     try {
@@ -84,6 +84,21 @@
         <li><a href="https://doi.org/10.1109/WIECON-ECE48653.2019.9019929" target="_blank" rel="noopener noreferrer">IEEE Xplore</a></li>
         <!-- Add when available: <li><a href="https://scholar.google.com/citations?user=XXXX" target="_blank" rel="noopener noreferrer">Google Scholar</a></li> -->
       </ul>
+      <p class="clock" aria-live="off">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span class="clock-time" data-tz="Asia/Dhaka">--:--</span>
+        <span class="clock-zone">Dhaka (GMT+6)</span>
+      </p>
+
+      <div class="map">
+        <iframe
+          src="https://maps.google.com/maps?q=Dhaka%2C%20Bangladesh&amp;z=11&amp;output=embed"
+          title="Map showing Dhaka, Bangladesh"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen></iframe>
+        <a class="map-link" href="https://www.google.com/maps/place/Dhaka,+Bangladesh" target="_blank" rel="noopener noreferrer">Dhaka, Bangladesh · Open in Google Maps</a>
+      </div>
 
     </aside>
 
@@ -352,6 +367,20 @@
       document.querySelectorAll('.topbar .toc a').forEach(function (a) {
         drawerNav.appendChild(a.cloneNode(true));
       });
+      // Live clock in Dhaka time (updates every copy, including the one in the drawer)
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Dhaka', weekday: 'short', hour: 'numeric', minute: '2-digit', second: '2-digit'
+      });
+      function tick() {
+        var now = fmt.format(new Date());
+        document.querySelectorAll('.clock-time').forEach(function (el) { el.textContent = now; });
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      // On mobile the location map lives in the drawer (the sidebar copy is hidden by CSS)
+      var sideMap = document.querySelector('.sidebar .map');
+      if (sideMap) drawer.appendChild(sideMap.cloneNode(true));
       function setOpen(open) {
         document.body.classList.toggle('drawer-open', open);
         menuBtn.setAttribute('aria-expanded', String(open));
@@ -366,6 +395,17 @@
       drawerNav.addEventListener('click', function (e) {
         if (e.target.closest('a')) document.body.classList.remove('drawer-open'), menuBtn.setAttribute('aria-expanded', 'false'), drawer.setAttribute('aria-hidden', 'true');
       });
+      // Sticky sidebar: if it is taller than the window, let it scroll until its bottom
+      // (the map) is visible, then stick there instead of hiding the bottom.
+      var sidebar = document.querySelector('.sidebar');
+      function fitSidebar() {
+        var top = 88, h = sidebar.offsetHeight;
+        sidebar.style.top = (h + top + 16 > window.innerHeight ? window.innerHeight - h - 16 : top) + 'px';
+      }
+      window.addEventListener('resize', fitSidebar);
+      window.addEventListener('load', fitSidebar);
+      fitSidebar();
+
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && document.body.classList.contains('drawer-open')) setOpen(false);
       });
