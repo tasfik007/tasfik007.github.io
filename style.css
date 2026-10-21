@@ -121,6 +121,11 @@ a:hover { text-decoration: underline; }
 .clock-zone { color: var(--muted); font-size: 13px; }
 .map-link { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
 
+/* Desktop: GitHub | LinkedIn | IEEE Xplore on one line at the bottom of the sidebar */
+.links .social-item { display: none; }
+.social-line { margin: -12px 0 14px; font-size: 14.5px; white-space: nowrap; }
+.social-line .sep { color: var(--muted); margin: 0 6px; }
+
 /* Main */
 main { min-width: 0; }
 .notice {
@@ -172,6 +177,8 @@ footer { border-top: 1px solid var(--border); padding-top: 14px; color: var(--mu
   .sidebar { position: static; text-align: center; }
   .avatar { margin: 0 auto 14px; width: 200px; height: 200px; }
   .sidebar .map { display: none; }
+  .links .social-item { display: list-item; }
+  .social-line { display: none; }
   .drawer .map { margin-top: 16px; }
   .drawer .map iframe { height: 112px; }
   .avatar-placeholder { font-size: 44px; }
